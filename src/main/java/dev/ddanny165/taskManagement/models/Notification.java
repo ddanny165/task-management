@@ -3,7 +3,6 @@ package dev.ddanny165.taskManagement.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -23,4 +22,12 @@ public class Notification {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User assignedUser;
+
+    @OneToOne
+    @JoinColumn(name = "assigned_task_id")
+    private Task assignedTask;
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,4 +34,22 @@ public class Task {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime toBeDoneUntil;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "assigned_employee_user_id")
+    private User assignedEmployee;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "created_by_user_id")
+    private User createdBy;
+
+    @ManyToMany(mappedBy = "tasks")
+    private List<Task> tags;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedTask")
+    private List<Comment> assignedComments;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "assigned_project_id")
+    private Project assignedProject;
 }

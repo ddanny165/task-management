@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,4 +31,22 @@ public class User {
     @CollectionTable(name = "User_UserRole")
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator", cascade = CascadeType.ALL)
+    private List<Comment> createdComments;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedEmployees")
+    private List<Project> assignedProjects;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedUser", cascade = CascadeType.ALL)
+    private List<Notification> notifications;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedEmployee")
+    private List<Task> assignedTasks;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "createdBy")
+    private List<Task> createdTasks;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "createdBy")
+    private List<TaskList> createdTaskLists;
 }

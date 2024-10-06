@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -15,4 +17,10 @@ public class Project {
 
     @Column(length = 50, nullable = false)
     private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedProjects")
+    private List<User> assignedEmployees;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedProject")
+    private List<Task> assignedTasks;
 }
