@@ -22,7 +22,7 @@ public class UserxService {
     }
 
     /**
-     * Retrieves a user by their unique identifier.
+     * Retrieves a user by its unique identifier.
      *
      * @param id The unique identifier of the user.
      * @return An Optional containing the user if found, otherwise an empty Optional.
