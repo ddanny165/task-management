@@ -45,10 +45,10 @@ public class UserxMapper implements DTOMapper<Userx, UserxDto> {
             entity.setPassword(dto.password());
             entity.setEmail(dto.email());
             entity.setFirstName(dto.firstName());
-            entity.setSecondName(dto.LastName());
+            entity.setSecondName(dto.lastName());
         } else {
             entity = new Userx(dto.username(), dto.password(),
-                    dto.firstName(), dto.LastName(), dto.email());
+                    dto.firstName(), dto.lastName(), dto.email());
         }
 
         return entity;

@@ -37,7 +37,7 @@ public class UserRESTController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        if (userxDto.firstName() == null || userxDto.LastName() == null
+        if (userxDto.firstName() == null || userxDto.lastName() == null
                 || userxDto.email() == null || userxDto.password() == null) {
             return new ResponseEntity<>(new ErrorDto(ErrorType.INVALID_NULL_PARAMETER,
                     "At least one of the provided parameters is equal to null!"),
@@ -54,8 +54,18 @@ public class UserRESTController {
         return new ResponseEntity<>(userxMapper.mapTo(userx), HttpStatus.CREATED);
     }
 
-    // TODO: login
+    // TODO: login user
     // POST endpoint "/auth/login"
     // Request Body: username + password
     // Response: JWT token
+
+    // TODO: update user
+    // Update user information such as email/password/firstName/LastName
+    // method parameters: @RequestBody Userx userxDto, Authentication authentication
+    // Request Body: UserxDto
+    // Authentication via JWT token
+
+    // TODO: get authenticated user information
+    // method parameters: Authentication authentication
+    // Authentication via JWT token (should be included in the request header)
 }
