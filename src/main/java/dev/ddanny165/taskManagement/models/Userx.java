@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -65,7 +66,7 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
 
     public Userx(String username, String password, String firstName, String secondName, String email) {
         this.username = username;
-        this.password = password;
+        this.password = "{bcrypt}" + new BCryptPasswordEncoder().encode(password);
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
@@ -77,6 +78,10 @@ public class Userx implements Persistable<String>, Serializable, Comparable<User
         this.assignedTasks = new ArrayList<>();
         this.createdTasks = new ArrayList<>();
         this.createdTaskLists = new ArrayList<>();
+    }
+
+    public void setPassword(String password) {
+        this.password = "{bcrypt}" + new BCryptPasswordEncoder().encode(password);
     }
 
     @Override
