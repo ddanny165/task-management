@@ -402,7 +402,7 @@
         <mxCell id="UVHLolNygaHATevlrU82-115" value="1" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="360" y="120" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="UVHLolNygaHATevlrU82-116" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;- assignedUser&lt;/font&gt;" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="UVHLolNygaHATevlrU82-116" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;- assignedUserx&lt;/font&gt;" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="400" y="120" width="70" height="30" as="geometry" />
         </mxCell>
         <mxCell id="UVHLolNygaHATevlrU82-117" value="" style="endArrow=openThin;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;endFill=0;endSize=14;" edge="1" parent="1" source="UVHLolNygaHATevlrU82-108" target="UVHLolNygaHATevlrU82-119">
