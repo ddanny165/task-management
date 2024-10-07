@@ -32,8 +32,11 @@ public class Project implements Persistable<Long>, Serializable, Comparable<Proj
     @Column(length = 50, nullable = false)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedProjects")
-    private List<User> assignedEmployees;
+    @ManyToMany
+    @JoinTable( name =  "project_employee",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private List<Userx> assignedEmployees;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedProject")
     private List<Task> assignedTasks;

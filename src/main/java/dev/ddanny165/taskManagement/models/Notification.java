@@ -37,17 +37,17 @@ public class Notification implements Persistable<Long>, Serializable, Comparable
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    private User assignedUser;
+    private Userx assignedUserx;
 
     @OneToOne
     @JoinColumn(name = "assigned_task_id")
     private Task assignedTask;
 
-    public Notification(String message, Boolean isRead, LocalDateTime createdAt, User assignedUser, Task assignedTask) {
+    public Notification(String message, Boolean isRead, LocalDateTime createdAt, Userx assignedUserx, Task assignedTask) {
         this.message = message;
         this.isRead = isRead;
         this.createdAt = createdAt;
-        this.assignedUser = assignedUser;
+        this.assignedUserx = assignedUserx;
         this.assignedTask = assignedTask;
     }
 
@@ -58,7 +58,7 @@ public class Notification implements Persistable<Long>, Serializable, Comparable
 
     @Override
     public int hashCode() {
-        return Objects.hash(message, createdAt, assignedUser, assignedTask);
+        return Objects.hash(message, createdAt, assignedUserx, assignedTask);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Notification implements Persistable<Long>, Serializable, Comparable
         }
 
         return Objects.equals(this.message, other.message) && Objects.equals(this.createdAt, other.createdAt)
-                && Objects.equals(this.assignedUser, other.assignedUser)
+                && Objects.equals(this.assignedUserx, other.assignedUserx)
                 && Objects.equals(this.assignedTask, other.assignedTask);
     }
 
@@ -88,7 +88,7 @@ public class Notification implements Persistable<Long>, Serializable, Comparable
             return resultCreatedAt;
         }
 
-        int resultAssignedUser = this.assignedUser.compareTo(other.assignedUser);
+        int resultAssignedUser = this.assignedUserx.compareTo(other.assignedUserx);
         if (resultAssignedUser != 0) {
             return resultAssignedUser;
         }

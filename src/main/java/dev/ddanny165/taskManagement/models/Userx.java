@@ -18,7 +18,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @ToString
-public class User implements Persistable<String>, Serializable, Comparable<User> {
+public class Userx implements Persistable<String>, Serializable, Comparable<Userx> {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -51,7 +51,7 @@ public class User implements Persistable<String>, Serializable, Comparable<User>
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "assignedEmployees")
     private List<Project> assignedProjects;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedUser", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedUserx", cascade = CascadeType.ALL)
     private List<Notification> notifications;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedEmployee")
@@ -63,7 +63,7 @@ public class User implements Persistable<String>, Serializable, Comparable<User>
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "createdBy")
     private List<TaskList> createdTaskLists;
 
-    public User(String username, String password, String firstName, String secondName, String email) {
+    public Userx(String username, String password, String firstName, String secondName, String email) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -90,7 +90,7 @@ public class User implements Persistable<String>, Serializable, Comparable<User>
     }
 
     @Override
-    public int compareTo(User other) {
+    public int compareTo(Userx other) {
         return this.username.compareTo(other.getUsername());
     }
 
@@ -105,7 +105,7 @@ public class User implements Persistable<String>, Serializable, Comparable<User>
             return false;
         }
 
-        if (!(obj instanceof User other)) {
+        if (!(obj instanceof Userx other)) {
             return false;
         }
 

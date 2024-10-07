@@ -52,24 +52,27 @@ public class Task implements Persistable<Long>, Serializable, Comparable<Task> {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assigned_employee_user_id")
-    private User assignedEmployee;
+    private Userx assignedEmployee;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by_user_id")
-    private User createdBy;
+    private Userx createdBy;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "assigned_project_id")
     private Project assignedProject;
 
-    @ManyToMany(mappedBy = "tasks")
-    private List<Task> tags;
+    @ManyToMany
+    @JoinTable( name =  "task_tag",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignedTask")
     private List<Comment> assignedComments;
 
     public Task(String title, String description, TaskStatus status, TaskPriority priority,
-                LocalDateTime createdAt, LocalDateTime toBeDoneUntil, User assignedEmployee, User createdBy,
+                LocalDateTime createdAt, LocalDateTime toBeDoneUntil, Userx assignedEmployee, Userx createdBy,
                 Project assignedProject) {
         this.title = title;
         this.description = description;
