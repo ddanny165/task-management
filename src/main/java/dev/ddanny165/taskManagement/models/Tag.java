@@ -46,7 +46,6 @@ public class Tag implements Persistable<String>, Serializable, Comparable<Tag> {
         return name;
     }
 
-    // TODO: check the correctness of using an id as a significant variable
     @Override
     public int hashCode() {
         return Objects.hash(name);

@@ -39,12 +39,12 @@ public class TaskList implements Persistable<Long>, Serializable, Comparable<Tas
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by_user_id")
-    private User createdBy;
+    private Userx createdBy;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Task> tasks;
 
-    public TaskList(String name, TaskListVisibility visibility, User creator) {
+    public TaskList(String name, TaskListVisibility visibility, Userx creator) {
         this.name = name;
         this.visibility = visibility;
         this.createdBy = creator;
