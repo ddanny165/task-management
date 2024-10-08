@@ -25,7 +25,7 @@ public class UserRESTController {
 
     // TODO: remove later, implemented in order to test the functionality of the REST controller
     @GetMapping("")
-    public List<Userx> findAll() {
+    public List<Userx> getAll() {
         return userxService.findAllUsers();
     }
 
