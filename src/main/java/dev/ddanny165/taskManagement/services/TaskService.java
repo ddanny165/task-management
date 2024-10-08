@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,5 +140,17 @@ public class TaskService {
         Optional<Task> foundTask = this.findTaskById(id);
         // TODO: probably handle external references
         foundTask.ifPresent(this.taskRepository::delete);
+    }
+
+    public boolean isAValidStatus(String taskStatus) {
+        return new HashSet<>(Arrays.stream(TaskStatus.values())
+                .map(TaskStatus::name)
+                .toList()).contains(taskStatus);
+    }
+
+    public boolean isAValidPriority(String taskPriority) {
+        return new HashSet<>(Arrays.stream(TaskPriority.values())
+                .map(TaskPriority::name)
+                .toList()).contains(taskPriority);
     }
 }
