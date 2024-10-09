@@ -105,7 +105,9 @@ public class TaskService {
             foundTask.setAssignedComments(updateData.getAssignedComments());
         }
 
-        return Optional.of(foundTask);
+        Task updatedTask = taskRepository.save(foundTask);
+
+        return Optional.of(updatedTask);
      }
 
     public void deleteTask(Long id) {
