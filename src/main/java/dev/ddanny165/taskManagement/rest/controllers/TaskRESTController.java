@@ -42,7 +42,7 @@ public class TaskRESTController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> create(TaskDto taskDto) {
+    public ResponseEntity<?> createTask(@RequestBody TaskDto taskDto) {
         if (!taskService.isAValidStatus(taskDto.status())) {
             return new ResponseEntity<>(new ErrorDto(ErrorType.INVALID_TASK_STATUS_NAME,
                     "The task status of the task to create is invalid."), HttpStatus.BAD_REQUEST);
@@ -63,5 +63,22 @@ public class TaskRESTController {
         return new ResponseEntity<>(taskMapper.mapTo(savedTask), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
+        Optional<Task> updatedTaskOpt = this.taskService.updateTask(id, taskMapper.mapFrom(taskDto));
 
+        if (updatedTaskOpt.isEmpty()) {
+            return new ResponseEntity<>(new ErrorDto(ErrorType.NOT_FOUND,
+                    "A task with the given id: |" + id + "| is not found"),
+                    HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(taskMapper.mapTo(updatedTaskOpt.get()), HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTask(@PathVariable Long id) {
+        this.taskService.deleteTask(id);
+        return ResponseEntity.noContent().build();
+     }
 }

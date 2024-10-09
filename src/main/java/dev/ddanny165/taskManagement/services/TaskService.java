@@ -51,6 +51,70 @@ public class TaskService {
     }
 
     /**
+     * Updates the task for more than one attribute being updated
+     *
+     * @param id of the task to update
+     * @param updateData to update the task with
+     * @return Optional, specifying whether the task was updated successfully or not
+     */
+    public Optional<Task> updateTask(Long id, Task updateData) {
+        Optional<Task> foundTaskOpt = taskRepository.findById(id);
+        if (foundTaskOpt.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Task foundTask = foundTaskOpt.get();
+
+        if (updateData.getTitle() != null) {
+            foundTask.setTitle(updateData.getTitle());
+        }
+
+        if (updateData.getDescription() != null) {
+            foundTask.setDescription(updateData.getDescription());
+        }
+
+        if (updateData.getStatus() != null) {
+            foundTask.setStatus(updateData.getStatus());
+        }
+
+        if (updateData.getPriority() != null) {
+            foundTask.setPriority(updateData.getPriority());
+        }
+
+        if (updateData.getCreatedAt() != null) {
+            foundTask.setCreatedAt(updateData.getCreatedAt());
+        }
+
+        if (updateData.getToBeDoneUntil() != null) {
+            foundTask.setToBeDoneUntil(updateData.getToBeDoneUntil());
+        }
+
+        if (updateData.getAssignedEmployee() != null) {
+            foundTask.setAssignedEmployee(updateData.getAssignedEmployee());
+        }
+
+        if (updateData.getAssignedProject() != null) {
+            foundTask.setAssignedProject(updateData.getAssignedProject());
+        }
+
+        if (updateData.getTags() != null) {
+            foundTask.setTags(updateData.getTags());
+        }
+
+        if (updateData.getAssignedComments() != null) {
+            foundTask.setAssignedComments(updateData.getAssignedComments());
+        }
+
+        return Optional.of(foundTask);
+     }
+
+    public void deleteTask(Long id) {
+        Optional<Task> foundTask = this.findTaskById(id);
+        // TODO: probably handle external references
+        foundTask.ifPresent(this.taskRepository::delete);
+    }
+
+    /**
      * Updates the task status of a task.
      *
      * @param id of the task to update
@@ -97,7 +161,7 @@ public class TaskService {
      * @param toBeDoneUntil deadline to set
      * @return Optional, indicating whether an update occurred (not empty optional) or not (empty optional)
      */
-    public Optional<Task> updateTaskPriority(Long id, LocalDateTime toBeDoneUntil) {
+    public Optional<Task> updateTaskDeadline(Long id, LocalDateTime toBeDoneUntil) {
         Optional<Task> foundTask = this.findTaskById(id);
         Optional<Task> updatedTask = Optional.empty();
 
@@ -136,19 +200,21 @@ public class TaskService {
         return updatedTask;
     }
 
-    public void deleteTask(Long id) {
-        Optional<Task> foundTask = this.findTaskById(id);
-        // TODO: probably handle external references
-        foundTask.ifPresent(this.taskRepository::delete);
-    }
-
     public boolean isAValidStatus(String taskStatus) {
+        if (taskStatus == null || taskStatus.length() == 0) {
+            return false;
+        }
+
         return new HashSet<>(Arrays.stream(TaskStatus.values())
                 .map(TaskStatus::name)
                 .toList()).contains(taskStatus);
     }
 
     public boolean isAValidPriority(String taskPriority) {
+        if (taskPriority == null || taskPriority.length() == 0) {
+            return false;
+        }
+
         return new HashSet<>(Arrays.stream(TaskPriority.values())
                 .map(TaskPriority::name)
                 .toList()).contains(taskPriority);

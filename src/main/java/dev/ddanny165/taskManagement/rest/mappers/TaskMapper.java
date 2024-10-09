@@ -75,40 +75,35 @@ public class TaskMapper implements DTOMapper<Task, TaskDto> {
             return null;
         }
 
-        Optional<Task> foundTaskOpt = taskService.findTaskById(dto.id());
-        Task foundTask = null;
-        if (foundTaskOpt.isEmpty()) {
-            foundTask = new Task();
-            foundTask.setTags(new ArrayList<>());
-            foundTask.setAssignedComments(new ArrayList<>());
-        } else {
-            foundTask = foundTaskOpt.get();
-        }
+        Task taskEntity = new Task();
 
-        foundTask.setTitle(dto.title());
-        foundTask.setDescription(dto.description());
+        taskEntity.setTitle(dto.title());
+        taskEntity.setDescription(dto.description());
 
         if (taskService.isAValidStatus(dto.status())) {
-            foundTask.setStatus(TaskStatus.valueOf(dto.status()));
+            taskEntity.setStatus(TaskStatus.valueOf(dto.status()));
         }
 
         if (taskService.isAValidPriority(dto.priority())) {
-            foundTask.setPriority(TaskPriority.valueOf(dto.priority()));
+            taskEntity.setPriority(TaskPriority.valueOf(dto.priority()));
         }
 
-        foundTask.setCreatedAt(dto.createdAt());
-        foundTask.setToBeDoneUntil(dto.toBeDoneUntil());
+        taskEntity.setCreatedAt(dto.createdAt());
+        taskEntity.setToBeDoneUntil(dto.toBeDoneUntil());
 
         Optional<Userx> assignedUserOpt = userxService.findUserById(dto.assignedEmployeeUsername());
-        assignedUserOpt.ifPresent(foundTask::setAssignedEmployee);
+        assignedUserOpt.ifPresent(taskEntity::setAssignedEmployee);
 
         Optional<Userx> creatorOpt = userxService.findUserById(dto.creatorUsername());
-        creatorOpt.ifPresent(foundTask::setCreatedBy);
+        creatorOpt.ifPresent(taskEntity::setCreatedBy);
 
         // TODO: set Project
         // Optional<Project> assignedProjectOpt = projectService.findProjectById(dto.assignedProjectId());
         // assignedProjectOpt.ifPresent(foundTask::setAssignedProject);
 
-        return foundTask;
+        // TODO: set comments
+        // TODO: set tags
+
+        return taskEntity;
     }
 }
