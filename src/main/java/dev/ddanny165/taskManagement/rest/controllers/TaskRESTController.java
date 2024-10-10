@@ -1,10 +1,12 @@
 package dev.ddanny165.taskManagement.rest.controllers;
 
+import dev.ddanny165.taskManagement.models.Comment;
 import dev.ddanny165.taskManagement.models.Task;
 import dev.ddanny165.taskManagement.rest.dto.TaskDto;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorDto;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorType;
 import dev.ddanny165.taskManagement.rest.mappers.TaskMapper;
+import dev.ddanny165.taskManagement.services.CommentService;
 import dev.ddanny165.taskManagement.services.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +19,24 @@ import java.util.Optional;
 @RequestMapping("/api/tasks")
 public class TaskRESTController {
     private final TaskService taskService;
+    private final CommentService commentService;
     private final TaskMapper taskMapper;
 
-    public TaskRESTController(TaskService taskService, TaskMapper taskMapper) {
+    public TaskRESTController(TaskService taskService, TaskMapper taskMapper,
+                              CommentService commentService) {
         this.taskService = taskService;
         this.taskMapper = taskMapper;
+        this.commentService = commentService;
     }
 
     @GetMapping("")
-    public List<Task> getAllTasks() {
-        return taskService.findAllTasks();
+    public ResponseEntity<List<TaskDto>> getAllTasks() {
+        List<Task> foundTasks = taskService.findAllTasks();
+        List<TaskDto> taskDataToReturn = foundTasks.stream()
+                .map(taskMapper::mapTo)
+                .toList();
+
+        return ResponseEntity.ok(taskDataToReturn);
     }
 
     @GetMapping("/{id}")
@@ -39,6 +49,12 @@ public class TaskRESTController {
                     "A task with the given id: |" + id + "| is not found"),
                     HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<Comment>> getCommentsAssociatedWithTask(@PathVariable Long id) {
+        List<Comment> foundComments = commentService.findAllByTaskId(id);
+        return ResponseEntity.ok(foundComments);
     }
 
     @PostMapping("")

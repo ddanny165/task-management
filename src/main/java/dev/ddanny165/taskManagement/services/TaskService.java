@@ -1,18 +1,12 @@
 package dev.ddanny165.taskManagement.services;
 
-import dev.ddanny165.taskManagement.models.Task;
-import dev.ddanny165.taskManagement.models.TaskPriority;
-import dev.ddanny165.taskManagement.models.TaskStatus;
-import dev.ddanny165.taskManagement.models.Userx;
+import dev.ddanny165.taskManagement.models.*;
 import dev.ddanny165.taskManagement.repositories.TaskRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Scope("application")
@@ -21,13 +15,35 @@ public class TaskService {
 
     private final UserxService userxService;
 
-    public TaskService(TaskRepository taskRepository, UserxService userxService) {
+    private final ProjectService projectService;
+
+    public TaskService(TaskRepository taskRepository, UserxService userxService,
+                       ProjectService projectService) {
         this.taskRepository = taskRepository;
         this.userxService = userxService;
+        this.projectService = projectService;
     }
 
     public List<Task> findAllTasks() {
         return taskRepository.findAll();
+    }
+
+    public List<Task> findAllTasksByEmployeeId(String employeeId) {
+        Optional<Userx> foundEmployeeOpt = userxService.findUserById(employeeId);
+        if (foundEmployeeOpt.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return taskRepository.findAllByAssignedEmployee(foundEmployeeOpt.get());
+    }
+
+    public List<Task> findAllTasksByProjectId(Long id) {
+        Optional<Project> foundProjektOpt = projectService.findProjectById(id);
+        if (foundProjektOpt.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return taskRepository.findAllByAssignedProject(foundProjektOpt.get());
     }
 
     /**
@@ -47,6 +63,10 @@ public class TaskService {
      * @return the updated task
      */
     public Task saveTask(Task task) {
+        if (task == null) {
+            return null;
+        }
+
         return taskRepository.save(task);
     }
 
@@ -58,6 +78,10 @@ public class TaskService {
      * @return Optional, specifying whether the task was updated successfully or not
      */
     public Optional<Task> updateTask(Long id, Task updateData) {
+        if (updateData == null) {
+            return Optional.empty();
+        }
+
         Optional<Task> foundTaskOpt = taskRepository.findById(id);
         if (foundTaskOpt.isEmpty()) {
             return Optional.empty();
@@ -112,7 +136,6 @@ public class TaskService {
 
     public void deleteTask(Long id) {
         Optional<Task> foundTask = this.findTaskById(id);
-        // TODO: probably handle external references
         foundTask.ifPresent(this.taskRepository::delete);
     }
 
