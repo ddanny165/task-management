@@ -1,10 +1,12 @@
 package dev.ddanny165.taskManagement.services;
 
+import dev.ddanny165.taskManagement.models.Project;
 import dev.ddanny165.taskManagement.models.Userx;
 import dev.ddanny165.taskManagement.repositories.UserxRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,17 +14,29 @@ import java.util.Optional;
 @Scope("application")
 public class UserxService {
     private final UserxRepository userxRepository;
+    private final ProjectService projectService;
 
-    public UserxService(UserxRepository userxRepository) {
+    public UserxService(UserxRepository userxRepository, ProjectService projectService) {
         this.userxRepository = userxRepository;
+        this.projectService = projectService;
     }
 
     public List<Userx> findAllUsers() {
         return userxRepository.findAll();
     }
 
+    public List<Userx> findAllUsersByProjectId(Long projectId) {
+        Optional<Project> foundProjectOpt = projectService.findProjectById(projectId);
+        if (foundProjectOpt.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Project foundProject = foundProjectOpt.get();
+        return foundProject.getAssignedEmployees();
+     }
+
     /**
-     * Retrieves a user by their unique identifier.
+     * Retrieves a user by its unique identifier.
      *
      * @param id The unique identifier of the user.
      * @return An Optional containing the user if found, otherwise an empty Optional.
