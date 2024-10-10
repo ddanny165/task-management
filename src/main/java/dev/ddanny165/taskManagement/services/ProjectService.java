@@ -38,4 +38,12 @@ public class ProjectService {
         Userx foundUserx = foundUserxOpt.get();
         return foundUserx.getAssignedProjects();
     }
+
+    public Project saveProject(Project project) {
+        if (project == null) {
+            return null;
+        }
+
+        return projectRepository.save(project);
+    }
 }

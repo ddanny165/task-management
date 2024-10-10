@@ -2,9 +2,11 @@ package dev.ddanny165.taskManagement.rest.controllers;
 
 import dev.ddanny165.taskManagement.models.Comment;
 import dev.ddanny165.taskManagement.models.Task;
+import dev.ddanny165.taskManagement.rest.dto.CommentDto;
 import dev.ddanny165.taskManagement.rest.dto.TaskDto;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorDto;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorType;
+import dev.ddanny165.taskManagement.rest.mappers.CommentMapper;
 import dev.ddanny165.taskManagement.rest.mappers.TaskMapper;
 import dev.ddanny165.taskManagement.services.CommentService;
 import dev.ddanny165.taskManagement.services.TaskService;
@@ -21,12 +23,14 @@ public class TaskRESTController {
     private final TaskService taskService;
     private final CommentService commentService;
     private final TaskMapper taskMapper;
+    private final CommentMapper commentMapper;
 
     public TaskRESTController(TaskService taskService, TaskMapper taskMapper,
-                              CommentService commentService) {
+                              CommentService commentService, CommentMapper commentMapper) {
         this.taskService = taskService;
         this.taskMapper = taskMapper;
         this.commentService = commentService;
+        this.commentMapper = commentMapper;
     }
 
     @GetMapping("")
@@ -52,9 +56,11 @@ public class TaskRESTController {
     }
 
     @GetMapping("/{id}/comments")
-    public ResponseEntity<List<Comment>> getCommentsAssociatedWithTask(@PathVariable Long id) {
+    public ResponseEntity<List<CommentDto>> getCommentsAssociatedWithTask(@PathVariable Long id) {
         List<Comment> foundComments = commentService.findAllByTaskId(id);
-        return ResponseEntity.ok(foundComments);
+        return ResponseEntity.ok(foundComments.stream()
+                .map(commentMapper::mapTo)
+                .toList());
     }
 
     @PostMapping("")
