@@ -102,5 +102,5 @@ public class TaskRESTController {
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         this.taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
-     }
+    }
 }
