@@ -17,11 +17,14 @@ public class TaskService {
 
     private final ProjectService projectService;
 
+    private final TaskListService taskListService;
+
     public TaskService(TaskRepository taskRepository, UserxService userxService,
-                       ProjectService projectService) {
+                       ProjectService projectService, TaskListService taskListService) {
         this.taskRepository = taskRepository;
         this.userxService = userxService;
         this.projectService = projectService;
+        this.taskListService = taskListService;
     }
 
     public List<Task> findAllTasks() {
@@ -44,6 +47,16 @@ public class TaskService {
         }
 
         return taskRepository.findAllByAssignedProject(foundProjektOpt.get());
+    }
+
+    public List<Task> findAllTasksByTaskListId(Long id) {
+        Optional<TaskList> foundTaskListOpt = taskListService.findTaskListById(id);
+        if (foundTaskListOpt.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        TaskList foundTaskList = foundTaskListOpt.get();
+        return foundTaskList.getTasks();
     }
 
     /**

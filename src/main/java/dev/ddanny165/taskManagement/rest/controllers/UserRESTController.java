@@ -14,10 +14,7 @@ import dev.ddanny165.taskManagement.rest.mappers.CommentMapper;
 import dev.ddanny165.taskManagement.rest.mappers.ProjectMapper;
 import dev.ddanny165.taskManagement.rest.mappers.TaskMapper;
 import dev.ddanny165.taskManagement.rest.mappers.UserxMapper;
-import dev.ddanny165.taskManagement.services.CommentService;
-import dev.ddanny165.taskManagement.services.ProjectService;
-import dev.ddanny165.taskManagement.services.TaskService;
-import dev.ddanny165.taskManagement.services.UserxService;
+import dev.ddanny165.taskManagement.services.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,15 +28,17 @@ public class UserRESTController {
     private final CommentService commentService;
     private final TaskService taskService;
     private final ProjectService projectService;
+    private final TaskListService taskListService;
     private final UserxMapper userxMapper;
     private final TaskMapper taskMapper;
     private final ProjectMapper projectMapper;
     private final CommentMapper commentMapper;
 
     public UserRESTController(UserxService userxService, UserxMapper userxMapper,
-                               TaskService taskService, TaskMapper taskMapper,
+                              TaskService taskService, TaskMapper taskMapper,
                               CommentService commentService, CommentMapper commentMapper,
-                              ProjectService projectService, ProjectMapper projectMapper) {
+                              ProjectService projectService, ProjectMapper projectMapper,
+                              TaskListService taskListService) {
         this.userxService = userxService;
         this.userxMapper = userxMapper;
         this.taskService = taskService;
@@ -48,6 +47,7 @@ public class UserRESTController {
         this.commentMapper = commentMapper;
         this.projectService = projectService;
         this.projectMapper = projectMapper;
+        this.taskListService = taskListService;
     }
 
     @GetMapping("")
