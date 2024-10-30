@@ -95,7 +95,7 @@ public class TaskService {
      * @return Optional, specifying whether the task was updated successfully or not
      */
     public Optional<Task> updateTask(Long id, Task updateData) {
-        if (updateData == null) {
+        if (updateData == null || id == null) {
             return Optional.empty();
         }
 
@@ -152,8 +152,10 @@ public class TaskService {
      }
 
     public void deleteTask(Long id) {
-        Optional<Task> foundTask = this.findTaskById(id);
-        foundTask.ifPresent(this.taskRepository::delete);
+        if (id != null) {
+            Optional<Task> foundTask = this.findTaskById(id);
+            foundTask.ifPresent(this.taskRepository::delete);
+        }
     }
 
     /**
