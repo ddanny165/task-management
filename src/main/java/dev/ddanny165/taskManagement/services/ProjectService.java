@@ -85,7 +85,6 @@ public class ProjectService {
         }
 
         Project updatedProject = projectRepository.save(foundProject);
-
         return Optional.of(updatedProject);
     }
 
