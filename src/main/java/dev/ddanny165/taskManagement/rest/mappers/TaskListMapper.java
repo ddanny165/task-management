@@ -51,6 +51,10 @@ public class TaskListMapper implements DTOMapper<TaskList, TaskListDto>{
 
     @Override
     public TaskList mapFrom(TaskListDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
         TaskList taskListEntity = new TaskList();
 
         taskListEntity.setName(dto.name());

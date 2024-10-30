@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -58,6 +59,18 @@ public class UserRESTController {
                 .toList();
 
         return ResponseEntity.ok(userDataToReturn);
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getUserData(@PathVariable String username) {
+        Optional<Userx> userxOpt = userxService.findUserById(username);
+        if (userxOpt.isPresent()) {
+            return new ResponseEntity<>(userxMapper.mapTo(userxOpt.get()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ErrorDto(ErrorType.NOT_FOUND,
+                    "A user with the given username: |" + username + "| is not found"),
+                    HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{username}/comments")

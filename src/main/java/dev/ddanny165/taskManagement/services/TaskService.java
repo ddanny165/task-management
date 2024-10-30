@@ -66,6 +66,10 @@ public class TaskService {
      * @return An Optional containing the task if found, otherwise an empty Optional.
      */
     public Optional<Task> findTaskById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+
         return taskRepository.findById(id);
     }
 
@@ -91,7 +95,7 @@ public class TaskService {
      * @return Optional, specifying whether the task was updated successfully or not
      */
     public Optional<Task> updateTask(Long id, Task updateData) {
-        if (updateData == null) {
+        if (updateData == null || id == null) {
             return Optional.empty();
         }
 
@@ -135,21 +139,29 @@ public class TaskService {
         }
 
         if (updateData.getTags() != null) {
-            foundTask.setTags(updateData.getTags());
+            List<Tag> assignedTags = new ArrayList<>();
+            updateData.getTags().forEach(t -> assignedTags.add(t));
+            foundTask.setTags(assignedTags);
         }
 
         if (updateData.getAssignedComments() != null) {
-            foundTask.setAssignedComments(updateData.getAssignedComments());
+            List<Comment> assignedComments = new ArrayList<>();
+            updateData.getAssignedComments().forEach(ac -> {
+                ac.setAssignedTask(foundTask);
+                assignedComments.add(ac);
+            });
+            foundTask.setAssignedComments(assignedComments);
         }
 
         Task updatedTask = taskRepository.save(foundTask);
-
         return Optional.of(updatedTask);
      }
 
     public void deleteTask(Long id) {
-        Optional<Task> foundTask = this.findTaskById(id);
-        foundTask.ifPresent(this.taskRepository::delete);
+        if (id != null) {
+            Optional<Task> foundTask = this.findTaskById(id);
+            foundTask.ifPresent(this.taskRepository::delete);
+        }
     }
 
     /**

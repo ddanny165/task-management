@@ -24,6 +24,10 @@ public class CommentMapper implements DTOMapper<Comment, CommentDto> {
 
     @Override
     public CommentDto mapTo(Comment entity) {
+        if (entity == null) {
+            return null;
+        }
+
         String creatorUsername = null;
         if (entity.getCreator() != null) {
             creatorUsername = entity.getCreator().getUsername();
@@ -39,6 +43,10 @@ public class CommentMapper implements DTOMapper<Comment, CommentDto> {
 
     @Override
     public Comment mapFrom(CommentDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
         Optional<Userx> foundUserOpt = this.userxService.findUserById(dto.creatorUsername());
         Userx userx = null;
         if (foundUserOpt.isPresent()) {

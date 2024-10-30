@@ -28,8 +28,8 @@ public class ProjectRESTController {
     private final TaskService taskService;
     private final ProjectMapper projectMapper;
     private final TaskMapper taskMapper;
-    private UserxService userxService;
-    private UserxMapper userxMapper;
+    private final UserxService userxService;
+    private final UserxMapper userxMapper;
 
     public ProjectRESTController(ProjectService projectService, ProjectMapper projectMapper,
                                  TaskService taskService, TaskMapper taskMapper,
@@ -95,13 +95,22 @@ public class ProjectRESTController {
         return new ResponseEntity<>(projectMapper.mapTo(savedProject), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProject(@PathVariable Long id, @RequestBody ProjectDto dto) {
+        Optional<Project> updatedProjectOpt = this.projectService.updateProject(id, projectMapper.mapFrom(dto));
 
+        if (updatedProjectOpt.isEmpty()) {
+            return new ResponseEntity<>(new ErrorDto(ErrorType.NOT_FOUND,
+                    "A project with the given id: |" + id + "| is not found"),
+                    HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(projectMapper.mapTo(updatedProjectOpt.get()), HttpStatus.OK);
+        }
+    }
 
-
-
-
-
-
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProject(@PathVariable Long id) {
+        this.projectService.deleteProject(id);
+        return ResponseEntity.noContent().build();
+    }
 }
