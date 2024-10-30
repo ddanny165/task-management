@@ -26,6 +26,10 @@ public class ProjectMapper implements DTOMapper<Project, ProjectDto> {
 
     @Override
     public ProjectDto mapTo(Project entity) {
+        if (entity == null) {
+            return null;
+        }
+
         List<String> assignedEmployees = entity.getAssignedEmployees()
                 .stream()
                 .map(Userx::getUsername)
@@ -41,6 +45,10 @@ public class ProjectMapper implements DTOMapper<Project, ProjectDto> {
 
     @Override
     public Project mapFrom(ProjectDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
         Project projectEntity = new Project(dto.name());
 
         if (dto.assignedEmployees() != null) {

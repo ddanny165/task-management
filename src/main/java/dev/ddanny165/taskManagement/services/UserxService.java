@@ -42,6 +42,10 @@ public class UserxService {
      * @return An Optional containing the user if found, otherwise an empty Optional.
      */
     public Optional<Userx> findUserById(String id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+
         return userxRepository.findById(id);
     }
 

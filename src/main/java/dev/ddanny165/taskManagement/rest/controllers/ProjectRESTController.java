@@ -28,8 +28,8 @@ public class ProjectRESTController {
     private final TaskService taskService;
     private final ProjectMapper projectMapper;
     private final TaskMapper taskMapper;
-    private UserxService userxService;
-    private UserxMapper userxMapper;
+    private final UserxService userxService;
+    private final UserxMapper userxMapper;
 
     public ProjectRESTController(ProjectService projectService, ProjectMapper projectMapper,
                                  TaskService taskService, TaskMapper taskMapper,
