@@ -66,6 +66,10 @@ public class TaskService {
      * @return An Optional containing the task if found, otherwise an empty Optional.
      */
     public Optional<Task> findTaskById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+
         return taskRepository.findById(id);
     }
 

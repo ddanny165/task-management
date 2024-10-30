@@ -3,6 +3,7 @@ package dev.ddanny165.taskManagement.services;
 import dev.ddanny165.taskManagement.models.Project;
 import dev.ddanny165.taskManagement.models.Userx;
 import dev.ddanny165.taskManagement.repositories.ProjectRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserxService userxService;
 
-    public ProjectService(ProjectRepository projectRepository, UserxService userxService) {
+    public ProjectService(ProjectRepository projectRepository, @Lazy UserxService userxService) {
         this.projectRepository = projectRepository;
         this.userxService = userxService;
     }
@@ -26,6 +27,10 @@ public class ProjectService {
     }
 
     public Optional<Project> findProjectById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+
         return projectRepository.findById(id);
     }
 

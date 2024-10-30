@@ -28,6 +28,10 @@ public class CommentService {
     }
 
     public Optional<Comment> findCommentById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+
         return commentRepository.findById(id);
     }
 

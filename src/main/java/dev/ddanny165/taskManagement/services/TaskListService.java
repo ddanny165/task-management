@@ -20,6 +20,10 @@ public class TaskListService {
     }
 
     public Optional<TaskList> findTaskListById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+
         return this.taskListRepository.findById(id);
     }
 
