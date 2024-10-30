@@ -2,4 +2,4 @@ package dev.ddanny165.taskManagement.rest.dto;
 
 import java.util.List;
 
-public record ProjectDto(String name, List<String> assignedEmployees, List<Long> assignedTasks) { }
+public record ProjectDto(Long id, String name, List<String> assignedEmployees, List<Long> assignedTasks) { }

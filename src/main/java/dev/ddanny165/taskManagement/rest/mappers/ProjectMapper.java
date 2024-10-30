@@ -40,7 +40,7 @@ public class ProjectMapper implements DTOMapper<Project, ProjectDto> {
                 .map(Task::getId)
                 .toList();
 
-        return new ProjectDto(entity.getName(), assignedEmployees, assignedTasks);
+        return new ProjectDto(entity.getId(), entity.getName(), assignedEmployees, assignedTasks);
     }
 
     @Override
@@ -50,6 +50,10 @@ public class ProjectMapper implements DTOMapper<Project, ProjectDto> {
         }
 
         Project projectEntity = new Project(dto.name());
+
+        if (dto.id() != null) {
+            projectEntity.setId(dto.id());
+        }
 
         if (dto.assignedEmployees() != null) {
             projectEntity.setAssignedEmployees(
