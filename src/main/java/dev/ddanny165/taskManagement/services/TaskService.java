@@ -139,15 +139,21 @@ public class TaskService {
         }
 
         if (updateData.getTags() != null) {
-            foundTask.setTags(updateData.getTags());
+            List<Tag> assignedTags = new ArrayList<>();
+            updateData.getTags().forEach(t -> assignedTags.add(t));
+            foundTask.setTags(assignedTags);
         }
 
         if (updateData.getAssignedComments() != null) {
-            foundTask.setAssignedComments(updateData.getAssignedComments());
+            List<Comment> assignedComments = new ArrayList<>();
+            updateData.getAssignedComments().forEach(ac -> {
+                ac.setAssignedTask(foundTask);
+                assignedComments.add(ac);
+            });
+            foundTask.setAssignedComments(assignedComments);
         }
 
         Task updatedTask = taskRepository.save(foundTask);
-
         return Optional.of(updatedTask);
      }
 
