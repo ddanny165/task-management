@@ -45,7 +45,7 @@ public class TaskListMapper implements DTOMapper<TaskList, TaskListDto>{
             creatorUsername = entity.getCreatedBy().getUsername();
         }
 
-        return new TaskListDto(entity.getName(), entity.getVisibility().name(),
+        return new TaskListDto(entity.getId(), entity.getName(), entity.getVisibility().name(),
                 creatorUsername, assignedTaskIds);
     }
 

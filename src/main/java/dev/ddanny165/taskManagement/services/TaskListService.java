@@ -23,20 +23,16 @@ public class TaskListService {
         return taskListRepository.findAll();
     }
 
+    public List<TaskList> findAllPublicTaskLists() {
+        return taskListRepository.findAllByVisibility(TaskListVisibility.PUBLIC);
+    }
+
     public Optional<TaskList> findTaskListById(Long id) {
         if (id == null) {
             return Optional.empty();
         }
 
         return this.taskListRepository.findById(id);
-    }
-
-    public TaskList saveTaskList(TaskList taskList) {
-        if (taskList == null) {
-            return null;
-        }
-
-        return taskListRepository.save(taskList);
     }
 
     public List<TaskList> findAllTaskListsByUserxUsername(String username) {
@@ -77,6 +73,14 @@ public class TaskListService {
 
         TaskList updatedTaskList = taskListRepository.save(foundTaskList);
         return Optional.of(updatedTaskList);
+    }
+
+    public TaskList saveTaskList(TaskList taskList) {
+        if (taskList == null) {
+            return null;
+        }
+
+        return taskListRepository.save(taskList);
     }
 
     public void deleteTaskList(Long id) {
