@@ -1,8 +1,6 @@
 package dev.ddanny165.taskManagement.rest.controllers;
 
-import dev.ddanny165.taskManagement.models.Task;
 import dev.ddanny165.taskManagement.models.TaskList;
-import dev.ddanny165.taskManagement.rest.dto.TaskDto;
 import dev.ddanny165.taskManagement.rest.dto.TaskListDto;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorDto;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorType;
@@ -16,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/task-lists")
+@RequestMapping("/api/tasklists")
 public class TaskListRESTController {
     private final TaskListService taskListService;
     private final TaskListMapper taskListMapper;
@@ -30,6 +28,16 @@ public class TaskListRESTController {
     public ResponseEntity<List<TaskListDto>> getAllTaskLists() {
         List<TaskList> foundTaskLists = taskListService.findAllTaskLists();
         List<TaskListDto> taskListDtos = foundTaskLists.stream()
+                .map(taskListMapper::mapTo)
+                .toList();
+
+        return ResponseEntity.ok(taskListDtos);
+    }
+
+    @GetMapping("public")
+    public ResponseEntity<List<TaskListDto>> getAllPublicTaskLists() {
+        List<TaskList> foundPublicTaskLists = taskListService.findAllPublicTaskLists();
+        List<TaskListDto> taskListDtos = foundPublicTaskLists.stream()
                 .map(taskListMapper::mapTo)
                 .toList();
 

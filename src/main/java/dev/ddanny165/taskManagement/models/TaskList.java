@@ -41,7 +41,12 @@ public class TaskList implements Persistable<Long>, Serializable, Comparable<Tas
     @JoinColumn(name = "created_by_user_id")
     private Userx createdBy;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "task_list_tasks",
+            joinColumns = @JoinColumn(name = "task_list_id"),
+            inverseJoinColumns = @JoinColumn(name = "tasks_id")
+    )
     private List<Task> tasks;
 
     public TaskList(String name, TaskListVisibility visibility, Userx creator) {
