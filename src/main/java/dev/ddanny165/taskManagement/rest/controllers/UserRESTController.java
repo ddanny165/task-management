@@ -1,19 +1,10 @@
 package dev.ddanny165.taskManagement.rest.controllers;
 
-import dev.ddanny165.taskManagement.models.Comment;
-import dev.ddanny165.taskManagement.models.Project;
-import dev.ddanny165.taskManagement.models.Task;
-import dev.ddanny165.taskManagement.models.Userx;
-import dev.ddanny165.taskManagement.rest.dto.CommentDto;
-import dev.ddanny165.taskManagement.rest.dto.ProjectDto;
-import dev.ddanny165.taskManagement.rest.dto.TaskDto;
-import dev.ddanny165.taskManagement.rest.dto.UserxDto;
+import dev.ddanny165.taskManagement.models.*;
+import dev.ddanny165.taskManagement.rest.dto.*;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorDto;
 import dev.ddanny165.taskManagement.rest.dto.error.ErrorType;
-import dev.ddanny165.taskManagement.rest.mappers.CommentMapper;
-import dev.ddanny165.taskManagement.rest.mappers.ProjectMapper;
-import dev.ddanny165.taskManagement.rest.mappers.TaskMapper;
-import dev.ddanny165.taskManagement.rest.mappers.UserxMapper;
+import dev.ddanny165.taskManagement.rest.mappers.*;
 import dev.ddanny165.taskManagement.services.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +21,7 @@ public class UserRESTController {
     private final TaskService taskService;
     private final ProjectService projectService;
     private final TaskListService taskListService;
+    private final TaskListMapper taskListMapper;
     private final UserxMapper userxMapper;
     private final TaskMapper taskMapper;
     private final ProjectMapper projectMapper;
@@ -39,7 +31,7 @@ public class UserRESTController {
                               TaskService taskService, TaskMapper taskMapper,
                               CommentService commentService, CommentMapper commentMapper,
                               ProjectService projectService, ProjectMapper projectMapper,
-                              TaskListService taskListService) {
+                              TaskListService taskListService, TaskListMapper taskListMapper) {
         this.userxService = userxService;
         this.userxMapper = userxMapper;
         this.taskService = taskService;
@@ -49,6 +41,7 @@ public class UserRESTController {
         this.projectService = projectService;
         this.projectMapper = projectMapper;
         this.taskListService = taskListService;
+        this.taskListMapper = taskListMapper;
     }
 
     @GetMapping("")
@@ -101,6 +94,16 @@ public class UserRESTController {
                 .toList();
 
         return ResponseEntity.ok(projectDataToReturn);
+    }
+
+    @GetMapping("{username}/tasklists")
+    public ResponseEntity<List<TaskListDto>> getCreatedTaskLists(@PathVariable String username) {
+        List<TaskList> foundTaskLists = taskListService.findAllTaskListsByUserxUsername(username);
+        List<TaskListDto> taskListDtos = foundTaskLists.stream()
+                .map(taskListMapper::mapTo)
+                .toList();
+
+        return ResponseEntity.ok(taskListDtos);
     }
 
     @PostMapping("/auth/register")
