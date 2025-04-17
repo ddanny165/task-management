@@ -1,7 +1,23 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import "./App.css";
+import AppLayout from "./pages/App/AppLayout";
+import Homepage from "./pages/Home/HomePage";
+import Login from "./pages/Login/Login";
+import TaskList from "./components/Tasks/TaskList";
 
 function App() {
-  return <div>Main</div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Homepage />} />
+        <Route path="login" element={<Login />} />
+        <Route path="app" element={<AppLayout />}>
+          <Route index element={<Navigate replace to="tasks" />}></Route>
+          <Route path="tasks" element={<TaskList />}></Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

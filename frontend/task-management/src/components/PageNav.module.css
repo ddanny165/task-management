@@ -1,0 +1,29 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav p {
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  gap: 60px;
+}
+
+.nav li {
+  background-color: var(--color-btn);
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.nav li:hover {
+  background-color: var(--color-btn-hover);
+}
