@@ -25,6 +25,7 @@ public class TaskListRESTController {
     }
 
     @GetMapping("")
+
     public ResponseEntity<List<TaskListDto>> getAllTaskLists() {
         List<TaskList> foundTaskLists = taskListService.findAllTaskLists();
         List<TaskListDto> taskListDtos = foundTaskLists.stream()
