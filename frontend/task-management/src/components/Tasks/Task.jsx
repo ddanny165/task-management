@@ -1,6 +1,7 @@
-import Button from "../Button";
+import { useState } from "react";
 import styles from "./Task.module.css";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import Popup from "../Popups/Popup";
 
 function formatDate(dateString) {
   const dateObj = new Date(dateString);
@@ -16,42 +17,70 @@ function formatDate(dateString) {
 
 function Task({ task }) {
   const navigate = useNavigate();
+  const [isDeletePopupShown, setIsDeletePopupShown] = useState(false);
 
-  function handleCLick(e) {
+  function handleRemoveBtnCLick(e) {
     e.stopPropagation();
     e.preventDefault();
-    // show popup
-    // deleteTask
+
+    setIsDeletePopupShown(true);
+  }
+
+  function handleClosePopup() {
+    setIsDeletePopupShown(false);
+  }
+
+  function handleTaskDeletion() {
+    console.log("TASK DELETION");
+    setIsDeletePopupShown(false);
+    // delete via the context
   }
 
   return (
-    <li className={styles.task} onClick={() => navigate(`${task.id}`)}>
-      <button className={styles["remove-btn"]} onClick={handleCLick}>
-        x
-      </button>
-      <h2>{task.title}</h2>
-
-      <div>
-        <p>
-          <strong>Priority:</strong>{" "}
-          <span
-            className={`${styles.priority} ${
-              styles[task.priority.toLowerCase()]
-            }`}
-          >
-            {task.priority}
-          </span>
-        </p>
+    <>
+      <li className={styles.task} onClick={() => navigate(`${task.id}`)}>
+        <button className={styles["remove-btn"]} onClick={handleRemoveBtnCLick}>
+          x
+        </button>
+        <h2>{task.title}</h2>
 
         <div>
-          <strong>Deadline:</strong> {formatDate(task.toBeDoneUntil)}
-        </div>
+          <p>
+            <strong>Priority:</strong>{" "}
+            <span
+              className={`${styles.priority} ${
+                styles[task.priority.toLowerCase()]
+              }`}
+            >
+              {task.priority}
+            </span>
+          </p>
 
-        <div>
-          <strong>Assignee:</strong> {task.assignedEmployeeUsername}
+          <div>
+            <strong>Deadline:</strong> {formatDate(task.toBeDoneUntil)}
+          </div>
+
+          <div>
+            <strong>Assignee:</strong> {task.assignedEmployeeUsername}
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
+      {isDeletePopupShown && (
+        <Popup>
+          <div className={styles["popup-content"]}>
+            <h2>Confirm Deletion</h2>
+            <p>
+              Are you sure that you want to delete the task{" "}
+              <strong>{task.title}</strong>?
+            </p>
+            <div className={styles["popup-buttons"]}>
+              <button onClick={handleTaskDeletion}>Delete</button>
+              <button onClick={handleClosePopup}>Close</button>
+            </div>
+          </div>
+        </Popup>
+      )}
+    </>
   );
 }
 
