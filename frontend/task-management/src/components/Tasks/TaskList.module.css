@@ -26,3 +26,43 @@
   text-align: center;
   margin: 0 10px;
 }
+
+.add-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+  font-weight: 800;
+}
+
+.popup-header {
+  text-align: center;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 30px 0 20px 0;
+}
+
+.popup-buttons button {
+  padding: 10px;
+  width: 80px;
+  height: 40px;
+}
+
+.select-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.select {
+  width: 150px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

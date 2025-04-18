@@ -25,6 +25,12 @@ function reducer(state, action) {
       return { ...state, isLoading: false, tasks: action.payload };
     case "task/loaded":
       return { ...state, isLoading: false, currentTask: action.payload };
+    case "task/created":
+      return {
+        ...state,
+        isLoading: false,
+        tasks: [...state.tasks, action.payload],
+      };
     case "task/deleted":
       return {
         ...state,
@@ -70,7 +76,6 @@ function TasksProvider({ children }) {
     try {
       const res = await fetch(`${BASE_URL}/tasks/${id}`);
       const data = await res.json();
-      console.log(data);
       dispatch({ type: "task/loaded", payload: data });
     } catch (err) {
       console.log(err);
@@ -97,6 +102,28 @@ function TasksProvider({ children }) {
     }
   }
 
+  async function createTask(newTask) {
+    console.log(newTask);
+    dispatch({ type: "loading" });
+    try {
+      const res = await fetch(`${BASE_URL}/tasks`, {
+        method: "POST",
+        body: JSON.stringify(newTask),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      dispatch({ type: "task/created", payload: data });
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error creating a city!",
+      });
+    }
+  }
+
   return (
     <TasksContext.Provider
       value={{
@@ -106,6 +133,7 @@ function TasksProvider({ children }) {
         error,
         statusEmojis,
         getTask,
+        createTask,
         deleteTask,
       }}
     >

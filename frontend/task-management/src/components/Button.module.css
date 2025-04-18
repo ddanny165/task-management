@@ -7,6 +7,11 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.btn:hover {
+  border-color: #646cff;
 }
 
 .primary {
@@ -17,5 +22,8 @@
   font-size: 20px;
 }
 
-.back {
+.add-task {
+  font-size: 15px;
+  max-width: 200px;
+  font-weight: inherit;
 }
