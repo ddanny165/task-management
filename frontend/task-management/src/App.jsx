@@ -4,19 +4,24 @@ import AppLayout from "./pages/App/AppLayout";
 import Homepage from "./pages/Home/HomePage";
 import Login from "./pages/Login/Login";
 import TaskList from "./components/Tasks/TaskList";
+import TaskDetails from "./components/Tasks/TaskDetails";
+import { TasksProvider } from "./contexts/TasksContext";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Homepage />} />
-        <Route path="login" element={<Login />} />
-        <Route path="app" element={<AppLayout />}>
-          <Route index element={<Navigate replace to="tasks" />}></Route>
-          <Route path="tasks" element={<TaskList />}></Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <TasksProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Homepage />} />
+          <Route path="login" element={<Login />} />
+          <Route path="app" element={<AppLayout />}>
+            <Route index element={<Navigate replace to="tasks" />}></Route>
+            <Route path="tasks" element={<TaskList />}></Route>
+            <Route path="tasks/:id" element={<TaskDetails />}></Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </TasksProvider>
   );
 }
 

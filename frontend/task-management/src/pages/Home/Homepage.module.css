@@ -1,6 +1,5 @@
 .homepage {
   height: calc(100vh - 50px);
-  margin: 20px auto;
   width: var(--container-width);
   background-image: linear-gradient(
       rgba(36, 42, 46, 0.8),
@@ -9,7 +8,7 @@
     url("../bg.jpg");
   background-size: cover;
   background-position: center;
-  padding: 2.5rem 5rem;
+  padding: 40px 80px;
 }
 
 .homepage section {
