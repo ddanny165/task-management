@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./Task.module.css";
 import { useNavigate } from "react-router";
 import Popup from "../Popups/Popup";
+import { useTasks } from "../../contexts/TasksContext";
 
 function formatDate(dateString) {
   const dateObj = new Date(dateString);
@@ -18,6 +19,7 @@ function formatDate(dateString) {
 function Task({ task }) {
   const navigate = useNavigate();
   const [isDeletePopupShown, setIsDeletePopupShown] = useState(false);
+  const { deleteTask } = useTasks();
 
   function handleRemoveBtnCLick(e) {
     e.stopPropagation();
@@ -30,10 +32,10 @@ function Task({ task }) {
     setIsDeletePopupShown(false);
   }
 
-  function handleTaskDeletion() {
+  function handleTaskDeletion(id) {
     console.log("TASK DELETION");
     setIsDeletePopupShown(false);
-    // delete via the context
+    deleteTask(id);
   }
 
   return (
@@ -74,7 +76,9 @@ function Task({ task }) {
               <strong>{task.title}</strong>?
             </p>
             <div className={styles["popup-buttons"]}>
-              <button onClick={handleTaskDeletion}>Delete</button>
+              <button onClick={() => handleTaskDeletion(task.id)}>
+                Delete
+              </button>
               <button onClick={handleClosePopup}>Close</button>
             </div>
           </div>

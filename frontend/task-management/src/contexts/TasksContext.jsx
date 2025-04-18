@@ -25,6 +25,12 @@ function reducer(state, action) {
       return { ...state, isLoading: false, tasks: action.payload };
     case "task/loaded":
       return { ...state, isLoading: false, currentTask: action.payload };
+    case "task/deleted":
+      return {
+        ...state,
+        isLoading: false,
+        tasks: state.tasks.filter((task) => task.id !== action.payload),
+      };
     case "rejected":
       return { ...state, isLoading: false, error: action.payload };
     default:
@@ -70,14 +76,38 @@ function TasksProvider({ children }) {
       console.log(err);
       dispatch({
         type: "rejected",
-        payload: "There was an error loading data...",
+        payload: "There was an error loading tasks...",
+      });
+    }
+  }
+
+  async function deleteTask(id) {
+    dispatch({ type: "loading" });
+    try {
+      await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "DELETE",
+      });
+      dispatch({ type: "task/deleted", payload: id });
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error deleting tasks...",
       });
     }
   }
 
   return (
     <TasksContext.Provider
-      value={{ tasks, isLoading, currentTask, error, getTask, statusEmojis }}
+      value={{
+        tasks,
+        isLoading,
+        currentTask,
+        error,
+        statusEmojis,
+        getTask,
+        deleteTask,
+      }}
     >
       {children}
     </TasksContext.Provider>
