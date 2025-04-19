@@ -2,6 +2,8 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../contexts/FakeAuthContext";
 import { useEffect } from "react";
 
+let secondsToRedirect = 2;
+
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ function ProtectedRoute({ children }) {
   useEffect(
     function () {
       if (!isAuthenticated) {
-        setTimeout(() => navigate("/"), 2000);
+        setTimeout(() => navigate("/"), secondsToRedirect * 1000);
       }
     },
     [isAuthenticated, navigate]
@@ -19,7 +21,7 @@ function ProtectedRoute({ children }) {
     children
   ) : (
     <h1 style={{ color: "red", textAlign: "center" }}>
-      Not authorized! Redirecting in 2 seconds...
+      Not authorized! Redirecting in {secondsToRedirect} seconds...
     </h1>
   );
 }

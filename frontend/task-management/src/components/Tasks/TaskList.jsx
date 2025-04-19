@@ -19,7 +19,7 @@ function TaskList() {
   const [isAddPopupShown, setIsAddPopupShown] = useState(false);
 
   let { currentUser } = useAuth();
-  let currentlyLoggedInUsername = "ddanny228";
+  let currentlyLoggedInUsername = currentUser.username;
 
   useEffect(() => {
     getTasks(currentlyLoggedInUsername);
