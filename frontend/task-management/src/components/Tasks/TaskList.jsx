@@ -23,7 +23,7 @@ function TaskList() {
 
   useEffect(() => {
     getTasks(currentlyLoggedInUsername);
-  }, []);
+  }, [getTasks, currentlyLoggedInUsername]);
 
   // add task form -- TODO: refactor in a separate component
   const [newTaskTitle, setNewTaskTitle] = useState("");

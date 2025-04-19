@@ -22,7 +22,7 @@ function Login() {
         navigate("/app", { replace: true });
       }
     },
-    [isAuthenticated]
+    [isAuthenticated, navigate]
   );
 
   return (

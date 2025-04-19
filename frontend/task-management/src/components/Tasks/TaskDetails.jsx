@@ -23,9 +23,8 @@ function TaskDetails() {
   useEffect(
     function () {
       getTask(id);
-      console.log(currentTask);
     },
-    [id]
+    [id, getTask]
   );
 
   return (
