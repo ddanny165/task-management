@@ -49,6 +49,8 @@ function TasksProvider({ children }) {
     initialState
   );
 
+  // TODO: Memoize functions to avoid a loop of triggering rerenders upon TasksProvider rerender
+
   async function getTasks(username) {
     dispatch({ type: "loading" });
     try {

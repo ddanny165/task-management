@@ -24,7 +24,7 @@ function TaskDetails() {
     function () {
       getTask(id);
     },
-    [id, getTask]
+    [id]
   );
 
   return (

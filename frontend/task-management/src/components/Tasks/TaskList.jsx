@@ -19,11 +19,11 @@ function TaskList() {
   const [isAddPopupShown, setIsAddPopupShown] = useState(false);
 
   let { currentUser } = useAuth();
-  let currentlyLoggedInUsername = currentUser.username;
+  let currentlyLoggedInUsername = "ddanny228";
 
   useEffect(() => {
     getTasks(currentlyLoggedInUsername);
-  }, [getTasks, currentlyLoggedInUsername]);
+  }, [currentlyLoggedInUsername]);
 
   // add task form -- TODO: refactor in a separate component
   const [newTaskTitle, setNewTaskTitle] = useState("");

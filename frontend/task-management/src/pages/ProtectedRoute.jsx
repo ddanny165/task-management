@@ -9,7 +9,7 @@ function ProtectedRoute({ children }) {
   useEffect(
     function () {
       if (!isAuthenticated) {
-        navigate("/");
+        setTimeout(() => navigate("/"), 2000);
       }
     },
     [isAuthenticated, navigate]
@@ -18,7 +18,9 @@ function ProtectedRoute({ children }) {
   return isAuthenticated ? (
     children
   ) : (
-    <h1 style={{ color: "red", textAlign: "center" }}>Not authorized!</h1>
+    <h1 style={{ color: "red", textAlign: "center" }}>
+      Not authorized! Redirecting in 2 seconds...
+    </h1>
   );
 }
 
