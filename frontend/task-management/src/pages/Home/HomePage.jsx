@@ -18,7 +18,9 @@ export default function Homepage() {
           accusantium labore hic voluptas nihil, voluptatibus quaerat,
           cupiditate nostrum laborum deserunt.
         </h2>
-        <Link to={"login"}>Start your journey now</Link>
+        <button className={styles["start-button"]}>
+          <Link to={"login"}>Start your journey now</Link>
+        </button>
       </section>
     </main>
   );

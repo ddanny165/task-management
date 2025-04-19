@@ -210,8 +210,8 @@ function TaskList() {
                     </select>
                   </div>
                   <div className={styles["popup-buttons"]}>
-                    <button onClick={handleTaskCreation}>Add</button>
                     <button onClick={handleClosePopup}>Close</button>
+                    <button onClick={handleTaskCreation}>Add</button>
                   </div>
                 </form>
               </div>

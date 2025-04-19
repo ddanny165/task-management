@@ -35,6 +35,12 @@ textarea {
   transition: all 0.5s;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+  background: none;
+}
+
 input:focus {
   outline: none;
   background-color: #8e1492;

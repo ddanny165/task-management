@@ -63,7 +63,7 @@ function TasksProvider({ children }) {
         console.log(err);
         dispatch({
           type: "rejected",
-          payload: "There was an error loading data...",
+          payload: "There was an error loading tasks...",
         });
       }
     }
@@ -143,7 +143,7 @@ function TasksProvider({ children }) {
 }
 
 function useTasks() {
-  let value = useContext(TasksContext);
+  const value = useContext(TasksContext);
   if (value === undefined) {
     throw new Error("TasksContext was used outside of TasksProvider");
   }
