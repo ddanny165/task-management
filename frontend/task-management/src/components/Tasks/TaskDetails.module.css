@@ -1,0 +1,69 @@
+.task-details {
+  width: 60%;
+  margin: 0 auto 0 auto;
+  border: solid 5px #32a1ce;
+  padding: 20px;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.enums {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dates {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.users {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.status {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.status.in_progress {
+  background-color: #fff9c4;
+  color: #f9a825;
+}
+
+.status.to_do {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status.done {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.priority {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.priority.low {
+  background-color: #4caf50;
+  color: #212121;
+}
+
+.priority.medium {
+  background-color: #ffc107;
+  color: #212121;
+}
+
+.priority.high {
+  background-color: #f44336;
+  color: #212121;
+}
