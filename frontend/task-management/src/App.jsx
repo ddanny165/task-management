@@ -7,6 +7,7 @@ import TaskList from "./components/Tasks/TaskList";
 import TaskDetails from "./components/Tasks/TaskDetails";
 import { TasksProvider } from "./contexts/TasksContext";
 import { AuthProvider } from "./contexts/FakeAuthContext";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="tasks" element={<TaskList />}></Route>
               <Route path="tasks/:id" element={<TaskDetails />}></Route>
             </Route>
+            <Route path="*" element={<PageNotFound />}></Route>
           </Routes>
         </BrowserRouter>
       </TasksProvider>

@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PageNav from "../../components/PageNav";
 import styles from "./Login.module.css";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../contexts/FakeAuthContext";
 
 function Login() {
   const [email, setEmail] = useState("moskaliuk.daniel@gmail.com");
   const [password, setPassword] = useState("password");
+  const { isAuthenticated, authError, login } = useAuth();
   const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
-    navigate("/app", { replace: true });
+    login(email, password);
   }
+
+  useEffect(
+    function () {
+      if (isAuthenticated) {
+        navigate("/app", { replace: true });
+      }
+    },
+    [isAuthenticated]
+  );
 
   return (
     <div className={styles.login}>
@@ -38,7 +49,9 @@ function Login() {
             value={password}
           />
         </div>
-
+        {authError && (
+          <div style={{ color: "red", textAlign: "center" }}>{authError}</div>
+        )}
         <Button type={"primary"}> Log in </Button>
       </form>
     </div>
