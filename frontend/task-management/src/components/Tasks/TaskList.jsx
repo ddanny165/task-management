@@ -2,21 +2,28 @@ import styles from "./TaskList.module.css";
 import Task from "./Task";
 import { useTasks } from "../../contexts/TasksContext";
 import Button from "../Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Popup from "../Popups/Popup";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-
-const currentlyLoggedInUsername = "ddanny165";
+import { useAuth } from "../../contexts/FakeAuthContext";
 
 const taskStatuses = ["TO_DO", "IN_PROGRESS", "DONE"];
 const taskPriorities = ["LOW", "MEDIUM", "HIGH"];
 const users = ["ddanny165", "ddanny228"]; // TODO: get from API
 
 function TaskList() {
-  const { tasks, isLoading, error, statusEmojis, createTask } = useTasks();
+  const { tasks, isLoading, error, statusEmojis, getTasks, createTask } =
+    useTasks();
   const [isAddPopupShown, setIsAddPopupShown] = useState(false);
+
+  let { currentUser } = useAuth();
+  let currentlyLoggedInUsername = currentUser.username;
+
+  useEffect(() => {
+    getTasks(currentlyLoggedInUsername);
+  }, []);
 
   // add task form -- TODO: refactor in a separate component
   const [newTaskTitle, setNewTaskTitle] = useState("");
@@ -24,7 +31,9 @@ function TaskList() {
   const [newTaskStatus, setNewTaskStatus] = useState(taskStatuses[0]);
   const [newTaskPriority, setNewTaskPriority] = useState(taskPriorities[0]);
   const [newTaskDeadline, setNewTaskDeadline] = useState(new Date());
-  const [newTaskAssigneeID, setNewTaskAssigneeID] = useState("ddanny165");
+  const [newTaskAssigneeID, setNewTaskAssigneeID] = useState(
+    currentlyLoggedInUsername
+  );
   const [newTaskCreationError, setNewTaskCreationError] = useState("");
 
   const toDoTasks = tasks.filter((task) => task.status === "TO_DO");
@@ -48,8 +57,6 @@ function TaskList() {
       setNewTaskCreationError("The title can not be empty 🥲");
       return;
     }
-
-    console.log(typeof newTaskDeadline);
 
     let newTask = {
       title: newTaskTitle,

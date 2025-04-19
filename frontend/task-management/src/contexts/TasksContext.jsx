@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 
-const currentlyLoggedInUsername = "ddanny165";
 const BASE_URL = "http://localhost:8080/api";
 const TasksContext = createContext();
 
@@ -50,26 +49,20 @@ function TasksProvider({ children }) {
     initialState
   );
 
-  useEffect(function () {
-    async function getTasks() {
-      dispatch({ type: "loading" });
-      try {
-        const res = await fetch(
-          `${BASE_URL}/users/${currentlyLoggedInUsername}/tasks`
-        );
-        const data = await res.json();
-        dispatch({ type: "tasks/loaded", payload: data });
-      } catch (err) {
-        console.log(err);
-        dispatch({
-          type: "rejected",
-          payload: "There was an error loading tasks...",
-        });
-      }
+  async function getTasks(username) {
+    dispatch({ type: "loading" });
+    try {
+      const res = await fetch(`${BASE_URL}/users/${username}/tasks`);
+      const data = await res.json();
+      dispatch({ type: "tasks/loaded", payload: data });
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error loading tasks...",
+      });
     }
-
-    getTasks();
-  }, []);
+  }
 
   async function getTask(id) {
     dispatch({ type: "loading" });
@@ -132,6 +125,7 @@ function TasksProvider({ children }) {
         currentTask,
         error,
         statusEmojis,
+        getTasks,
         getTask,
         createTask,
         deleteTask,

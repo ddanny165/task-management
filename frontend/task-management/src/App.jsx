@@ -8,6 +8,7 @@ import TaskDetails from "./components/Tasks/TaskDetails";
 import { TasksProvider } from "./contexts/TasksContext";
 import { AuthProvider } from "./contexts/FakeAuthContext";
 import PageNotFound from "./pages/PageNotFound";
+import ProtectedRoute from "./pages/ProtectedRoute";
 
 function App() {
   return (
@@ -17,7 +18,14 @@ function App() {
           <Routes>
             <Route index element={<Homepage />} />
             <Route path="login" element={<Login />} />
-            <Route path="app" element={<AppLayout />}>
+            <Route
+              path="app"
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Navigate replace to="tasks" />}></Route>
               <Route path="tasks" element={<TaskList />}></Route>
               <Route path="tasks/:id" element={<TaskDetails />}></Route>
