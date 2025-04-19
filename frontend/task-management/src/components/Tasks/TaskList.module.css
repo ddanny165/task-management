@@ -35,6 +35,12 @@
   font-weight: 800;
 }
 
+.add-btn button {
+  padding: 12px;
+  font-size: 15px;
+  font-weight: inherit;
+}
+
 .popup-header {
   text-align: center;
 }

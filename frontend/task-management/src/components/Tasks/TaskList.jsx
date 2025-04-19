@@ -1,10 +1,10 @@
 import styles from "./TaskList.module.css";
-import Task from "./Task";
 import { useTasks } from "../../contexts/TasksContext";
-import Button from "../Button";
 import { useEffect, useState } from "react";
-import Popup from "../Popups/Popup";
 import { useAuth } from "../../contexts/FakeAuthContext";
+import Task from "./Task";
+import Button from "../Button";
+import Popup from "../Popups/Popup";
 import Form from "../Form";
 
 const taskStatuses = ["TO_DO", "IN_PROGRESS", "DONE"];
@@ -23,7 +23,6 @@ function TaskList() {
     getTasks(currentlyLoggedInUsername);
   }, [currentlyLoggedInUsername]);
 
-  // add task form -- TODO: refactor in a separate component
   const toDoTasks = tasks.filter((task) => task.status === "TO_DO");
   const inProgressTasks = tasks.filter((task) => task.status === "IN_PROGRESS");
   const doneTasks = tasks.filter((task) => task.status === "DONE");
@@ -43,9 +42,7 @@ function TaskList() {
             Your tasks, {currentlyLoggedInUsername}
           </h1>
           <div className={styles["add-btn"]}>
-            <Button onClick={handleAddTask} type={"add-task"}>
-              ➕ Add a new task
-            </Button>
+            <button onClick={handleAddTask}>➕ Add a new task</button>
           </div>
           <div className={styles.container}>
             <div>
