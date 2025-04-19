@@ -49,13 +49,15 @@ function TaskList() {
       return;
     }
 
+    console.log(typeof newTaskDeadline);
+
     let newTask = {
       title: newTaskTitle,
       description: newTaskDescription,
       status: newTaskStatus,
       createdAt: new Date().toISOString().replace("Z", ""),
       priority: newTaskPriority,
-      toBeDoneUntil: newTaskDeadline.toISOString.replace("Z", ""),
+      toBeDoneUntil: newTaskDeadline.toISOString().replace("Z", ""),
       creatorUsername: currentlyLoggedInUsername,
       assignedEmployeeUsername: newTaskAssigneeID,
     };
