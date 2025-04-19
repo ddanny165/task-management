@@ -51,18 +51,3 @@
   width: 80px;
   height: 40px;
 }
-
-.select-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.select {
-  width: 150px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
