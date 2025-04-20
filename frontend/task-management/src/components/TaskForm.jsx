@@ -1,17 +1,18 @@
 import { useState } from "react";
-import styles from "./Form.module.css";
 import DatePicker from "react-datepicker";
+import styles from "./TaskForm.module.css";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-// TODO: Make Reusable
-function Form({
-  setIsAddPopupShown,
-  taskStatuses,
-  taskPriorities,
+const taskStatuses = ["TO_DO", "IN_PROGRESS", "DONE"];
+const taskPriorities = ["LOW", "MEDIUM", "HIGH"];
+const users = ["ddanny165", "ddanny228"]; // TODO: get from API
+
+function TaskForm({
+  setIsAPopupShown,
   currentlyLoggedInUsername,
-  users,
-  createTask,
+  actOnTask,
+  actionType,
 }) {
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
@@ -21,22 +22,22 @@ function Form({
   const [newTaskAssigneeID, setNewTaskAssigneeID] = useState(
     currentlyLoggedInUsername
   );
-  const [newTaskCreationError, setNewTaskCreationError] = useState("");
+  const [taskActionError, setTaskActionError] = useState("");
 
   function handleClosePopup(e) {
     e.preventDefault();
-    setIsAddPopupShown(false);
-    setNewTaskCreationError("");
+    setIsAPopupShown(false);
+    setTaskActionError("");
   }
 
-  function handleTaskCreation(e) {
+  function handleTaskAction(e) {
     e.preventDefault();
     if (newTaskTitle === "") {
-      setNewTaskCreationError("The title can not be empty 🥲");
+      setTaskActionError("The title can not be empty 🥲");
       return;
     }
 
-    let newTask = {
+    let newTaskBody = {
       title: newTaskTitle,
       description: newTaskDescription,
       status: newTaskStatus,
@@ -47,15 +48,26 @@ function Form({
       assignedEmployeeUsername: newTaskAssigneeID,
     };
 
-    createTask(newTask);
-    setIsAddPopupShown(false);
+    if (actionType === "createTask")
+      switch (actionType) {
+        case "createTask":
+          actOnTask(newTaskBody, currentlyLoggedInUsername);
+          break;
+        case "updateTask":
+          actOnTask(newTaskBody);
+          break;
+        default:
+          throw new Error("Unknown task form action type!");
+      }
+
+    setIsAPopupShown(false);
   }
 
   return (
     <form className={styles.form} onSubmit={() => {}}>
-      {newTaskCreationError && (
+      {taskActionError && (
         <div style={{ color: "red", textAlign: "center" }}>
-          {newTaskCreationError}
+          {taskActionError}
         </div>
       )}
       <div>
@@ -65,7 +77,7 @@ function Form({
           type="text"
           onChange={(e) => {
             if (newTaskTitle !== "") {
-              setNewTaskCreationError("");
+              setTaskActionError("");
             }
             setNewTaskTitle(e.target.value);
           }}
@@ -144,10 +156,10 @@ function Form({
       </div>
       <div className={styles["popup-buttons"]}>
         <button onClick={handleClosePopup}>Close</button>
-        <button onClick={handleTaskCreation}>Add</button>
+        <button onClick={handleTaskAction}>Add</button>
       </div>
     </form>
   );
 }
 
-export default Form;
+export default TaskForm;

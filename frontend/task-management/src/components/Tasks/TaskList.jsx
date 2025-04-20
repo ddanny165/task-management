@@ -3,13 +3,9 @@ import { useTasks } from "../../contexts/TasksContext";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/FakeAuthContext";
 import Task from "./Task";
-import Button from "../Button";
 import Popup from "../Popups/Popup";
-import Form from "../Form";
-
-const taskStatuses = ["TO_DO", "IN_PROGRESS", "DONE"];
-const taskPriorities = ["LOW", "MEDIUM", "HIGH"];
-const users = ["ddanny165", "ddanny228"]; // TODO: get from API
+import TaskForm from "../TaskForm";
+import Loading from "../Loading";
 
 function TaskList() {
   const { tasks, isLoading, error, statusEmojis, getTasks, createTask } =
@@ -35,8 +31,8 @@ function TaskList() {
   return (
     <>
       {error && <div>{error}</div>}
-      {isLoading && !error && <div>Loading...</div>}
-      {!isLoading && !error && tasks.length > 0 && (
+      {isLoading && !error && <Loading />}
+      {!isLoading && !error && (
         <>
           <h1 className={styles["welcome-header"]}>
             Your tasks, {currentlyLoggedInUsername}
@@ -80,15 +76,13 @@ function TaskList() {
 
           {isAddPopupShown && (
             <Popup>
-              <div className={styles["popup-content"]}>
+              <div>
                 <h2 className={styles["popup-header"]}>Add a new task</h2>
-                <Form
-                  setIsAddPopupShown={setIsAddPopupShown}
-                  taskStatuses={taskStatuses}
-                  taskPriorities={taskPriorities}
+                <TaskForm
+                  setIsAPopupShown={setIsAddPopupShown}
                   currentlyLoggedInUsername={currentlyLoggedInUsername}
-                  users={users}
-                  createTask={createTask}
+                  actOnTask={createTask}
+                  actionType="createTask"
                 />
               </div>
             </Popup>

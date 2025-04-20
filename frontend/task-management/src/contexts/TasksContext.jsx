@@ -28,7 +28,11 @@ function reducer(state, action) {
       return {
         ...state,
         isLoading: false,
-        tasks: [...state.tasks, action.payload],
+        tasks:
+          action.payload.currentUsername ===
+          action.payload.assignedEmployeeUsername
+            ? [...state.tasks, { ...action.payload, currentUsername: null }]
+            : [...state.tasks],
       };
     case "task/deleted":
       return {
@@ -50,7 +54,6 @@ function TasksProvider({ children }) {
   );
 
   // TODO: Memoize functions to avoid a loop of triggering rerenders upon TasksProvider rerender
-
   async function getTasks(username) {
     dispatch({ type: "loading" });
     try {
@@ -97,7 +100,7 @@ function TasksProvider({ children }) {
     }
   }
 
-  async function createTask(newTask) {
+  async function createTask(newTask, creatorUsername) {
     console.log(newTask);
     dispatch({ type: "loading" });
     try {
@@ -109,6 +112,7 @@ function TasksProvider({ children }) {
         },
       });
       const data = await res.json();
+      data.currentUsername = creatorUsername;
       dispatch({ type: "task/created", payload: data });
     } catch (err) {
       console.log(err);

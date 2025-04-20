@@ -21,7 +21,8 @@ function ProtectedRoute({ children }) {
     children
   ) : (
     <h1 style={{ color: "red", textAlign: "center" }}>
-      Not authorized! Redirecting in {secondsToRedirect} seconds...
+      Not authorized! Redirecting to the home page in {secondsToRedirect}{" "}
+      seconds...
     </h1>
   );
 }
