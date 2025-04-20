@@ -22,8 +22,6 @@ function reducer(state, action) {
       return { ...state, isLoading: true, error: "" };
     case "tasks/loaded":
       return { ...state, isLoading: false, tasks: action.payload };
-    case "task/loaded":
-      return { ...state, isLoading: false, currentTask: action.payload };
     case "task/created":
       return {
         ...state,
@@ -33,6 +31,15 @@ function reducer(state, action) {
           action.payload.assignedEmployeeUsername
             ? [...state.tasks, { ...action.payload, currentUsername: null }]
             : [...state.tasks],
+      };
+    case "task/loaded":
+      return { ...state, isLoading: false, currentTask: action.payload };
+    case "task/updated":
+      return {
+        ...state,
+        isLoading: false,
+        currentTask: action.payload,
+        tasks: [...state.tasks, action.payload],
       };
     case "task/deleted":
       return {
@@ -58,6 +65,10 @@ function TasksProvider({ children }) {
     dispatch({ type: "loading" });
     try {
       const res = await fetch(`${BASE_URL}/users/${username}/tasks`);
+      if (!res.ok) {
+        throw new Error(`Failed to get a task. Status: ${res.status}`);
+      }
+
       const data = await res.json();
       dispatch({ type: "tasks/loaded", payload: data });
     } catch (err) {
@@ -69,10 +80,40 @@ function TasksProvider({ children }) {
     }
   }
 
+  async function createTask(newTaskBody, creatorUsername) {
+    dispatch({ type: "loading" });
+    try {
+      const res = await fetch(`${BASE_URL}/tasks`, {
+        method: "POST",
+        body: JSON.stringify(newTaskBody),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error(`Failed to create a task. Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      data.currentUsername = creatorUsername;
+      dispatch({ type: "task/created", payload: data });
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error creating a task!",
+      });
+    }
+  }
+
   async function getTask(id) {
     dispatch({ type: "loading" });
     try {
       const res = await fetch(`${BASE_URL}/tasks/${id}`);
+      if (!res.ok) {
+        throw new Error(`Failed to get a task. Status: ${res.status}`);
+      }
+
       const data = await res.json();
       dispatch({ type: "task/loaded", payload: data });
     } catch (err) {
@@ -80,6 +121,32 @@ function TasksProvider({ children }) {
       dispatch({
         type: "rejected",
         payload: "There was an error loading tasks...",
+      });
+    }
+  }
+
+  async function updateTask(newTaskBody, id) {
+    console.log(newTaskBody);
+    dispatch({ type: "loading" });
+    try {
+      const res = await fetch(`${BASE_URL}/tasks/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(newTaskBody),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error(`Failed to update a task. Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      dispatch({ type: "task/updated", payload: data });
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: "rejected",
+        payload: "There was an error updating a task...",
       });
     }
   }
@@ -100,29 +167,6 @@ function TasksProvider({ children }) {
     }
   }
 
-  async function createTask(newTask, creatorUsername) {
-    console.log(newTask);
-    dispatch({ type: "loading" });
-    try {
-      const res = await fetch(`${BASE_URL}/tasks`, {
-        method: "POST",
-        body: JSON.stringify(newTask),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      data.currentUsername = creatorUsername;
-      dispatch({ type: "task/created", payload: data });
-    } catch (err) {
-      console.log(err);
-      dispatch({
-        type: "rejected",
-        payload: "There was an error creating a city!",
-      });
-    }
-  }
-
   return (
     <TasksContext.Provider
       value={{
@@ -132,8 +176,9 @@ function TasksProvider({ children }) {
         error,
         statusEmojis,
         getTasks,
-        getTask,
         createTask,
+        getTask,
+        updateTask,
         deleteTask,
       }}
     >

@@ -13,14 +13,28 @@ function TaskForm({
   currentlyLoggedInUsername,
   actOnTask,
   actionType,
+  taskId,
+  taskToUpdate,
 }) {
-  const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [newTaskDescription, setNewTaskDescription] = useState("");
-  const [newTaskStatus, setNewTaskStatus] = useState(taskStatuses[0]);
-  const [newTaskPriority, setNewTaskPriority] = useState(taskPriorities[0]);
-  const [newTaskDeadline, setNewTaskDeadline] = useState(new Date());
+  const [newTaskTitle, setNewTaskTitle] = useState(
+    taskToUpdate ? taskToUpdate.title : ""
+  );
+  const [newTaskDescription, setNewTaskDescription] = useState(
+    taskToUpdate ? taskToUpdate.description : ""
+  );
+  const [newTaskStatus, setNewTaskStatus] = useState(
+    taskToUpdate ? taskToUpdate.status : taskStatuses[0]
+  );
+  const [newTaskPriority, setNewTaskPriority] = useState(
+    taskToUpdate ? taskToUpdate.priority : taskPriorities[0]
+  );
+  const [newTaskDeadline, setNewTaskDeadline] = useState(
+    taskToUpdate ? new Date(taskToUpdate.toBeDoneUntil) : new Date()
+  );
   const [newTaskAssigneeID, setNewTaskAssigneeID] = useState(
-    currentlyLoggedInUsername
+    taskToUpdate
+      ? taskToUpdate.assignedEmployeeUsername
+      : currentlyLoggedInUsername
   );
   const [taskActionError, setTaskActionError] = useState("");
 
@@ -48,17 +62,16 @@ function TaskForm({
       assignedEmployeeUsername: newTaskAssigneeID,
     };
 
-    if (actionType === "createTask")
-      switch (actionType) {
-        case "createTask":
-          actOnTask(newTaskBody, currentlyLoggedInUsername);
-          break;
-        case "updateTask":
-          actOnTask(newTaskBody);
-          break;
-        default:
-          throw new Error("Unknown task form action type!");
-      }
+    switch (actionType) {
+      case "createTask":
+        actOnTask(newTaskBody, currentlyLoggedInUsername);
+        break;
+      case "updateTask":
+        actOnTask(newTaskBody, taskId);
+        break;
+      default:
+        throw new Error("Unknown task form action type!");
+    }
 
     setIsAPopupShown(false);
   }
@@ -156,7 +169,9 @@ function TaskForm({
       </div>
       <div className={styles["popup-buttons"]}>
         <button onClick={handleClosePopup}>Close</button>
-        <button onClick={handleTaskAction}>Add</button>
+        <button onClick={handleTaskAction}>
+          {actionType === "createTask" ? "Add" : "Update"}
+        </button>
       </div>
     </form>
   );

@@ -6,6 +6,7 @@ import BackButton from "../BackButton";
 import Popup from "../Popups/Popup";
 import { useAuth } from "../../contexts/FakeAuthContext";
 import Loading from "../Loading";
+import TaskForm from "../TaskForm";
 
 function formatDate(dateString) {
   const dateObj = new Date(dateString);
@@ -22,7 +23,8 @@ function formatDate(dateString) {
 function TaskDetails() {
   const { id } = useParams();
   const { currentUser } = useAuth();
-  const { isLoading, currentTask, error, getTask, statusEmojis } = useTasks();
+  const { isLoading, currentTask, error, getTask, updateTask, statusEmojis } =
+    useTasks();
   const [isEditPopupShown, setIsEditPopupShown] = useState(false);
 
   let [isAuthorizedToView, setIsAuthorizedToView] = useState(false);
@@ -117,7 +119,21 @@ function TaskDetails() {
             ✍️ Edit Task
           </button>
 
-          {isEditPopupShown && <Popup />}
+          {isEditPopupShown && (
+            <Popup>
+              <div>
+                <h2 className={styles["popup-header"]}>Update a task</h2>
+                <TaskForm
+                  setIsAPopupShown={setIsEditPopupShown}
+                  currentlyLoggedInUsername={currentUser.username}
+                  actOnTask={updateTask}
+                  taskId={id}
+                  taskToUpdate={currentTask}
+                  actionType="updateTask"
+                />
+              </div>
+            </Popup>
+          )}
         </>
       )}
     </>
