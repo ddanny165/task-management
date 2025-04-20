@@ -1,6 +1,6 @@
 .task-details {
   width: 60%;
-  margin: 0 auto 0 auto;
+  margin: 20px auto 0 auto;
   border: solid 5px #32a1ce;
   padding: 20px;
   font-size: 15px;
@@ -66,4 +66,16 @@
 .priority.high {
   background-color: #f44336;
   color: #212121;
+}
+
+.edit-button {
+  display: block;
+  width: 150px;
+  margin: 40px auto 0 auto;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.popup-header {
+  text-align: center;
 }

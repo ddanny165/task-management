@@ -33,7 +33,6 @@ function Task({ task }) {
   }
 
   function handleTaskDeletion(id) {
-    console.log("TASK DELETION");
     setIsDeletePopupShown(false);
     deleteTask(id);
   }
